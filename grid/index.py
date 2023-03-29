@@ -58,10 +58,16 @@ class Window(tk.Tk):
         #訊息顯示區域
         messageText = tk.Text(bottomFrame,height=5,width=35,state=tk.DISABLED)
         messageText.grid(column=0,row=5,sticky=tk.N+tk.S,columnspan=2)
+        #按鍵的Frame
+        commitFrame = ttk.Frame(bottomFrame)
+        commitFrame.grid(column=0 ,row=6,columnspan=2)
 
         #計算鍵
-        commitBtn = ttk.Button(bottomFrame,text="計算")
-        commitBtn.grid(column=1,row=6,sticky=tk.W)
+        commitBtn = ttk.Button(commitFrame,text="計算")
+        commitBtn.grid(column=0,row=6,sticky=tk.W)
+
+        clearBtn = ttk.Button(commitFrame, text="清除")
+        clearBtn.grid(column=1, row=6,sticky=tk.E)
 
     #BMI計算
     def BMI(self,weight,height):
