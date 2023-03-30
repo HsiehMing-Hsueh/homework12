@@ -79,20 +79,20 @@ class Window(tk.Tk):
         clearBtn.grid(column=1,row=0)
         #-------------commitFrame結束------------------------
 
-          
+    
     
     #BMI計算
-    def BMI_c(self,bmi):
-        bmi = self.weightValue // (self.heightValue/100) ** 2
-        if bmi < 18.5:
+    def BMI_c(self):
+        self.bmi = self.weightValue // (self.heightValue/100) ** 2
+        if self.bmi < 18.5:
             return"太輕"
-        elif bmi < 24:
+        elif self.bmi < 24:
             return"正常"
-        elif bmi < 27:
+        elif self.bmi < 27:
             return"過重"
-        elif bmi < 30:
+        elif self.bmi < 30:
             return"輕度肥胖"
-        elif bmi < 35:
+        elif self.bmi < 35:
             return"中度肥胖"
         else:
             return"重度肥胖"
@@ -100,15 +100,70 @@ class Window(tk.Tk):
     #檢查輸入的值
     def check_value(self):
         dateRegex = re.compile(r"^\d\d\d\d/\d\d/\d\d$")
-        birth_get = self.birthStringVar.get()
         self.nameValue = self.nameStringVar.get()
         self.birthValue = self.birthStringVar.get()
         birthMatch = re.match(dateRegex,self.birthValue)
+        #計算年齡
         Now = datetime.datetime.today().date()
-        birthday = datetime.date(int(birth_get[0:4]),int(birth_get[5:7]),int(birth_get[8:]))
-        age_date = Now - birthday 
-        age = datetime.timedelta(age_date)
-        print(age) 
+        birthday = datetime.date(int(self.birthValue[0:4]), int(self.birthValue[5:7]), int(self.birthValue[8:]))
+        age_delta = Now - birthday 
+        age_date = datetime.date(1,1,1) + age_delta
+        age = (str(age_date)[:4]) 
+        print(age_delta)
+
+        #判斷星座
+        birth_mo_day = int(self.birthValue[5:7]), int(self.birthValue[8:])
+        print(birth_mo_day)
+        star_sign = ""
+        if birth_mo_day[0] == 3 and birth_mo_day[1] <= 20:
+            star_sign = "雙魚座（Pisces）02/20~3/20"
+        if birth_mo_day[0] == 2 and birth_mo_day[1] >= 20:
+            star_sign = "雙魚座（Pisces）02/20~3/20"
+        if birth_mo_day[0] == 4 and birth_mo_day[1] <= 20:
+            star_sign = "牡羊座（Aries）03/21 ~ 04/20"
+        if birth_mo_day[0] == 3 and birth_mo_day[1] >= 21:
+            star_sign = "牡羊座（Aries）03/21 ~ 04/20"
+        if birth_mo_day[0] == 5 and birth_mo_day[1] <= 21:
+            star_sign = "金牛座（Taurus）04/21 ~ 05/21"
+        if birth_mo_day[0] == 4 and birth_mo_day[1] >= 21:
+            star_sign = "金牛座（Taurus）04/21 ~ 05/21"
+        if birth_mo_day[0] == 6 and birth_mo_day[1] <= 21:
+            star_sign = "雙子座（Gemini）05/22 ~ 06/21"
+        if birth_mo_day[0] == 5 and birth_mo_day[1] >= 22:
+            star_sign = "雙子座（Gemini）05/22 ~ 06/21"
+        if birth_mo_day[0] == 7 and birth_mo_day[1] <= 22:
+            star_sign = "巨蟹座（Cancer）06/22 ~ 07/22"
+        if birth_mo_day[0] == 6 and birth_mo_day[1] >= 22:
+            star_sign = "巨蟹座（Cancer）06/22 ~ 07/22"
+        if birth_mo_day[0] == 8 and birth_mo_day[1] <= 23:
+            star_sign = "獅子座（Leo）07/23 ~ 08/23"
+        if birth_mo_day[0] == 7 and birth_mo_day[1] <= 23:
+            star_sign = "獅子座（Leo）07/23 ~ 08/23"
+        if birth_mo_day[0] == 9 and birth_mo_day[1] <= 23:
+            star_sign = "處女座（Virgo）8/24~09/23"
+        if birth_mo_day[0] == 8 and birth_mo_day[1] >= 24:
+            star_sign = "處女座（Virgo）8/24~09/23"
+        if birth_mo_day[0] == 10 and birth_mo_day[1] <= 23:
+            star_sign = "天秤座（Libra）09/24~10/23"
+        if birth_mo_day[0] == 9 and birth_mo_day[1] >= 24:
+            star_sign = "天秤座（Libra）09/24~10/23"
+        if birth_mo_day[0] == 11 and birth_mo_day[1] <= 22:
+            star_sign = "天蠍座（Scorpio）10/24~11/22"
+        if birth_mo_day[0] == 10 and birth_mo_day[1] >= 24:
+            star_sign = "天蠍座（Scorpio）10/24~11/22"
+        if birth_mo_day[0] == 12 and birth_mo_day[1] <= 21:
+            star_sign = "射手座（Sagittarius）11/23~12/21"
+        if birth_mo_day[0] == 11 and birth_mo_day[1] >= 23:
+            star_sign = "射手座（Sagittarius）11/23~12/21"
+        if birth_mo_day[0] == 1 and birth_mo_day[1] <= 20:
+            star_sign = "摩羯座（Capricorn）12/22~01/20"
+        if birth_mo_day[0] == 12 and birth_mo_day[1] >= 22:
+            star_sign = "摩羯座（Capricorn）12/22~01/20"
+        if birth_mo_day[0] == 2 and birth_mo_day[1] <= 19:
+            star_sign = "水瓶座（Aquarius）01/21~2/19"
+        if birth_mo_day[0] == 1 and birth_mo_day[1] >= 21:
+            star_sign = "水瓶座（Aquarius）01/21~2/19"
+        
         if  birthMatch is None:            
             self.birthValue = ""
 
@@ -122,6 +177,21 @@ class Window(tk.Tk):
         except:
             self.weightValue =  0
         
+        # BMI計算
+        self.bmi = self.weightValue // (self.heightValue/100) ** 2
+        if self.bmi < 18.5:
+            bmi_message = "太輕"
+        if self.bmi < 24:
+            bmi_message = "正常"
+        if self.bmi < 27:
+            bmi_message = "過重"
+        if self.bmi < 30:
+            bmi_message = "輕度肥胖"
+        if self.bmi < 35:
+            bmi_message = "中度肥胖"
+        if self.bmi >= 35:
+            bmi_message = "重度肥胖"
+        #檢查值是否為初始值
         if self.nameValue == "" or self.birthValue == "" or self.heightValue == 0 or self.weightValue == 0 :            
             self.messageText.configure(state=tk.NORMAL)
             self.messageText.delete("1.0",tk.END)
@@ -130,9 +200,10 @@ class Window(tk.Tk):
         else:
             message = f"{self.nameValue}您好:\n"
             message += f"出生年月日:{self.birthValue}\n"
-            message += f"貴庚為:{age}"
-            message += f"星座為:"
-            message += "BMI:"
+            message += f"貴庚為:{age}\n"
+            message += f"星座為:{star_sign}\n"
+            message += f"BMI:{self.bmi}\n"
+            message += f"你的BMI值是:{bmi_message}哦~\n"
 
             self.messageText.configure(state=tk.NORMAL)
             self.messageText.delete("1.0",tk.END)
@@ -157,6 +228,7 @@ def main():
     """ 這是執行點 """
     window = Window()
     window.title("BMI計算")
+    #固定視窗
     window.resizable(width=False, height=False)
     window.protocol("WM_DELETE_WINDOW",lambda:close_window(window))
     #window.geometry("400x500")

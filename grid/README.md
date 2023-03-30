@@ -1,6 +1,7 @@
 # 作業12
 ## 專案在學習grid的編排
 
+主檔案是homework.py
 BMI的計算
 
 -pack
