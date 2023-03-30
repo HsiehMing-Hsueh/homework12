@@ -10,23 +10,25 @@ class Window(tk.Tk):
         super().__init__(**kwargs)
         ttkStyle =ttk.Style()
         ttkStyle.theme_use('default')
-        ttkStyle.configure('red.TFrame',background='red')
+        ttkStyle.configure('blue.TFrame',background='blue')
         ttkStyle.configure('white.TFrame',background='white')
-        ttkStyle.configure('yellow.TFrame',background='yellow')
-        ttkStyle.configure('gridLabel.TLabel',font=('Helvetica', '16'),foreground='#666666')
-        ttkStyle.configure('gridEntry.TEntry',font=('Helvetica', '16'),foreground='#333333')
+        ttkStyle.configure('green.TFrame',background='green')
+        ttkStyle.configure('lightblue.TLabel',background='lightblue')
+        ttkStyle.configure('gridLabel.TLabel',font=('Helvetica', '16'),foreground='#666666',background='lightgreen')
+        ttkStyle.configure('gridEntry.TEntry',font=('Helvetica', '16'),foreground='#666666',)
+        
 
         mainFrame = ttk.Frame(self)
         #ttk.Label(mainFrame,text='BMI試算').pack()
         mainFrame.pack(expand=True,fill=tk.BOTH,padx=20,pady=20)
     
         #上面的Frame
-        topFrame = ttk.Frame(mainFrame,height=100)
+        topFrame = ttk.Frame(mainFrame,height=100,style='blue.TFrame')
         topFrame.pack(fill=tk.X)
 
-        ttk.Label(topFrame,text="BMI試算",font=('Helvetica', '16')).pack(pady=20)
+        ttk.Label(topFrame,text="BMI試算",font=('Helvetica', '16'),style='lightblue.TLabel').pack(pady=20)
 
-        bottomFrame = ttk.Frame(mainFrame)
+        bottomFrame = ttk.Frame(mainFrame,style='green.TFrame')
         bottomFrame.pack(expand=True,fill=tk.BOTH)
         #下面的Frame的間格
         bottomFrame.columnconfigure(0,weight=3,pad=20)
@@ -80,8 +82,14 @@ class Window(tk.Tk):
         clearBtn.grid(column=1,row=0)
         #-------------commitFrame結束------------------------
 
-    
-    
+        #建立Logo
+        logoImage = Image.open('./Image/BMI_Pic.png')
+        resizeImage = logoImage.resize((50,50),Image.LANCZOS)
+        self.logoTkimage = ImageTk.PhotoImage(resizeImage)
+        logoLabel = ttk.Label(self,image=self.logoTkimage,width=50)
+        logoLabel.place(x=40,y=40)
+        
+
     #BMI計算
     def BMI_c(self):
         self.bmi = self.weightValue // (self.heightValue/100) ** 2
@@ -98,6 +106,15 @@ class Window(tk.Tk):
         else:
             return"重度肥胖"
         
+    #傳出訊息
+    def print_message(self):
+        message = f"{self.nameValue}您好:\n"
+        message += f"出生年月日:{self.birthValue}\n"
+        message += f"貴庚為:{self.age}歲\n"
+        message += f"星座為:{self.star_sign}\n"
+        message += f"BMI:{self.bmi}\n"
+        message += f"你的BMI值是:{self.bmi_message}哦~\n"
+
     #檢查輸入的值
     def check_value(self):
         dateRegex = re.compile(r"^\d\d\d\d/\d\d/\d\d$")
@@ -109,61 +126,61 @@ class Window(tk.Tk):
         birthday = datetime.date(int(self.birthValue[0:4]), int(self.birthValue[5:7]), int(self.birthValue[8:]))
         age_delta = Now - birthday 
         age_date = datetime.date(1,1,1) + age_delta
-        age = (int(age_date.isoformat()[:4])-1) 
+        self.age = (int(age_date.isoformat()[:4])-1) 
         
 
         #判斷星座
         birth_mo_day = int(self.birthValue[5:7]), int(self.birthValue[8:])
         print(birth_mo_day)
-        star_sign = ""
+        self.star_sign = ""
         if birth_mo_day[0] == 3 and birth_mo_day[1] <= 20:
-            star_sign = "雙魚座（Pisces）02/20~3/20"
+            self.star_sign = "雙魚座（Pisces）02/20~3/20"
         if birth_mo_day[0] == 2 and birth_mo_day[1] >= 20:
-            star_sign = "雙魚座（Pisces）02/20~3/20"
+            self.star_sign = "雙魚座（Pisces）02/20~3/20"
         if birth_mo_day[0] == 4 and birth_mo_day[1] <= 20:
-            star_sign = "牡羊座（Aries）03/21 ~ 04/20"
+            self.star_sign = "牡羊座（Aries）03/21 ~ 04/20"
         if birth_mo_day[0] == 3 and birth_mo_day[1] >= 21:
-            star_sign = "牡羊座（Aries）03/21 ~ 04/20"
+            self.star_sign = "牡羊座（Aries）03/21 ~ 04/20"
         if birth_mo_day[0] == 5 and birth_mo_day[1] <= 21:
-            star_sign = "金牛座（Taurus）04/21 ~ 05/21"
+            self.star_sign = "金牛座（Taurus）04/21 ~ 05/21"
         if birth_mo_day[0] == 4 and birth_mo_day[1] >= 21:
-            star_sign = "金牛座（Taurus）04/21 ~ 05/21"
+            self.star_sign = "金牛座（Taurus）04/21 ~ 05/21"
         if birth_mo_day[0] == 6 and birth_mo_day[1] <= 21:
-            star_sign = "雙子座（Gemini）05/22 ~ 06/21"
+            self.star_sign = "雙子座（Gemini）05/22 ~ 06/21"
         if birth_mo_day[0] == 5 and birth_mo_day[1] >= 22:
-            star_sign = "雙子座（Gemini）05/22 ~ 06/21"
+            self.star_sign = "雙子座（Gemini）05/22 ~ 06/21"
         if birth_mo_day[0] == 7 and birth_mo_day[1] <= 22:
-            star_sign = "巨蟹座（Cancer）06/22 ~ 07/22"
+            self.star_sign = "巨蟹座（Cancer）06/22 ~ 07/22"
         if birth_mo_day[0] == 6 and birth_mo_day[1] >= 22:
-            star_sign = "巨蟹座（Cancer）06/22 ~ 07/22"
+            self.star_sign = "巨蟹座（Cancer）06/22 ~ 07/22"
         if birth_mo_day[0] == 8 and birth_mo_day[1] <= 23:
-            star_sign = "獅子座（Leo）07/23 ~ 08/23"
+            self.star_sign = "獅子座（Leo）07/23 ~ 08/23"
         if birth_mo_day[0] == 7 and birth_mo_day[1] <= 23:
-            star_sign = "獅子座（Leo）07/23 ~ 08/23"
+            self.star_sign = "獅子座（Leo）07/23 ~ 08/23"
         if birth_mo_day[0] == 9 and birth_mo_day[1] <= 23:
-            star_sign = "處女座（Virgo）8/24~09/23"
+            self.star_sign = "處女座（Virgo）8/24~09/23"
         if birth_mo_day[0] == 8 and birth_mo_day[1] >= 24:
-            star_sign = "處女座（Virgo）8/24~09/23"
+            self.star_sign = "處女座（Virgo）8/24~09/23"
         if birth_mo_day[0] == 10 and birth_mo_day[1] <= 23:
-            star_sign = "天秤座（Libra）09/24~10/23"
+            self.star_sign = "天秤座（Libra）09/24~10/23"
         if birth_mo_day[0] == 9 and birth_mo_day[1] >= 24:
-            star_sign = "天秤座（Libra）09/24~10/23"
+            self.star_sign = "天秤座（Libra）09/24~10/23"
         if birth_mo_day[0] == 11 and birth_mo_day[1] <= 22:
-            star_sign = "天蠍座（Scorpio）10/24~11/22"
+            self.star_sign = "天蠍座（Scorpio）10/24~11/22"
         if birth_mo_day[0] == 10 and birth_mo_day[1] >= 24:
-            star_sign = "天蠍座（Scorpio）10/24~11/22"
+            self.star_sign = "天蠍座（Scorpio）10/24~11/22"
         if birth_mo_day[0] == 12 and birth_mo_day[1] <= 21:
-            star_sign = "射手座（Sagittarius）11/23~12/21"
+            self.star_sign = "射手座（Sagittarius）11/23~12/21"
         if birth_mo_day[0] == 11 and birth_mo_day[1] >= 23:
-            star_sign = "射手座（Sagittarius）11/23~12/21"
+            self.star_sign = "射手座（Sagittarius）11/23~12/21"
         if birth_mo_day[0] == 1 and birth_mo_day[1] <= 20:
-            star_sign = "摩羯座（Capricorn）12/22~01/20"
+            self.star_sign = "摩羯座（Capricorn）12/22~01/20"
         if birth_mo_day[0] == 12 and birth_mo_day[1] >= 22:
-            star_sign = "摩羯座（Capricorn）12/22~01/20"
+            self.star_sign = "摩羯座（Capricorn）12/22~01/20"
         if birth_mo_day[0] == 2 and birth_mo_day[1] <= 19:
-            star_sign = "水瓶座（Aquarius）01/21~2/19"
+            self.star_sign = "水瓶座（Aquarius）01/21~2/19"
         if birth_mo_day[0] == 1 and birth_mo_day[1] >= 21:
-            star_sign = "水瓶座（Aquarius）01/21~2/19"
+            self.star_sign = "水瓶座（Aquarius）01/21~2/19"
         
         if  birthMatch is None:            
             self.birthValue = ""
@@ -181,17 +198,18 @@ class Window(tk.Tk):
         # BMI計算
         self.bmi = self.weightValue // (self.heightValue/100) ** 2
         if self.bmi < 18.5:
-            bmi_message = "太輕"
+            self.bmi_message = "太輕"
         if self.bmi < 24:
-            bmi_message = "正常"
+            self.bmi_message = "正常"
         if self.bmi < 27:
-            bmi_message = "過重"
+            self.bmi_message = "過重"
         if self.bmi < 30:
-            bmi_message = "輕度肥胖"
+            self.bmi_message = "輕度肥胖"
         if self.bmi < 35:
-            bmi_message = "中度肥胖"
+            self.bmi_message = "中度肥胖"
         if self.bmi >= 35:
-            bmi_message = "重度肥胖"
+            self.bmi_message = "重度肥胖"
+
         #檢查值是否有值，否則傳出訊息
         if self.nameValue == "" or self.birthValue == "" or self.heightValue == 0 or self.weightValue == 0 :            
             self.messageText.configure(state=tk.NORMAL)
@@ -201,10 +219,10 @@ class Window(tk.Tk):
         else:
             message = f"{self.nameValue}您好:\n"
             message += f"出生年月日:{self.birthValue}\n"
-            message += f"貴庚為:{age}歲\n"
-            message += f"星座為:{star_sign}\n"
+            message += f"貴庚為:{self.age}歲\n"
+            message += f"星座為:{self.star_sign}\n"
             message += f"BMI:{self.bmi}\n"
-            message += f"你的BMI值是:{bmi_message}哦~\n"
+            message += f"你的BMI值是:{self.bmi_message}哦~\n"
 
             self.messageText.configure(state=tk.NORMAL)
             self.messageText.delete("1.0",tk.END)
@@ -220,7 +238,7 @@ class Window(tk.Tk):
         self.messageText.configure(state=tk.NORMAL)        
         self.messageText.delete("1.0",tk.END)
         self.messageText.configure(state=tk.DISABLED)
-
+#關閉視窗能做甚麼事
 def close_window(w):
     w.destroy()
 
