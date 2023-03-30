@@ -64,8 +64,9 @@ class Window(tk.Tk):
         self.weightEntry.grid(column=1, row=4, sticky=tk.W, padx=10)
 
         #訊息顯示區域
-        self.messageText = tk.Text(bottomFrame,height=5,width=35,state=tk.DISABLED)
+        self.messageText = tk.Text(bottomFrame,height=6,width=35,state=tk.DISABLED)
         self.messageText.grid(column=0,row=5,sticky=tk.N+tk.S,columnspan=2)
+
         #-------------commitFrame開始------------------------
         commitFrame =ttk.Button(bottomFrame)
         commitFrame.grid(column=0,row=6,columnspan=2)
@@ -108,8 +109,8 @@ class Window(tk.Tk):
         birthday = datetime.date(int(self.birthValue[0:4]), int(self.birthValue[5:7]), int(self.birthValue[8:]))
         age_delta = Now - birthday 
         age_date = datetime.date(1,1,1) + age_delta
-        age = (str(age_date)[:4]) 
-        print(age_delta)
+        age = (int(age_date.isoformat()[:4])-1) 
+        
 
         #判斷星座
         birth_mo_day = int(self.birthValue[5:7]), int(self.birthValue[8:])
@@ -191,7 +192,7 @@ class Window(tk.Tk):
             bmi_message = "中度肥胖"
         if self.bmi >= 35:
             bmi_message = "重度肥胖"
-        #檢查值是否為初始值
+        #檢查值是否有值，否則傳出訊息
         if self.nameValue == "" or self.birthValue == "" or self.heightValue == 0 or self.weightValue == 0 :            
             self.messageText.configure(state=tk.NORMAL)
             self.messageText.delete("1.0",tk.END)
@@ -200,7 +201,7 @@ class Window(tk.Tk):
         else:
             message = f"{self.nameValue}您好:\n"
             message += f"出生年月日:{self.birthValue}\n"
-            message += f"貴庚為:{age}\n"
+            message += f"貴庚為:{age}歲\n"
             message += f"星座為:{star_sign}\n"
             message += f"BMI:{self.bmi}\n"
             message += f"你的BMI值是:{bmi_message}哦~\n"
