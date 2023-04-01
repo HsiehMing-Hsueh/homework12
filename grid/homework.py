@@ -92,7 +92,7 @@ class Window(tk.Tk):
 
     #BMI計算
     def BMI_c(self):
-        self.bmi = self.weightValue // (self.heightValue/100) ** 2
+        self.bmi = (self.weightValue // (self.heightValue/100)) ** 2
         if self.bmi < 18.5:
             return"太輕"
         elif self.bmi < 24:
