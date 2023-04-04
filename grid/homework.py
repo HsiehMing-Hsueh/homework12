@@ -92,16 +92,16 @@ class Window(tk.Tk):
 
     #BMI計算
     def BMI_c(self):
-        self.bmi = (self.weightValue // (self.heightValue/100)) ** 2
+        self.bmi = self.weightValue // (self.heightValue/100) ** 2
         if self.bmi < 18.5:
             return"太輕"
-        elif self.bmi < 24:
+        elif 18.5 < self.bmi < 24:
             return"正常"
-        elif self.bmi < 27:
+        elif 24 < self.bmi < 27:
             return"過重"
-        elif self.bmi < 30:
+        elif 27< self.bmi < 30:
             return"輕度肥胖"
-        elif self.bmi < 35:
+        elif 30< self.bmi < 35:
             return"中度肥胖"
         else:
             return"重度肥胖"
@@ -199,7 +199,7 @@ class Window(tk.Tk):
         self.bmi = self.weightValue // (self.heightValue/100) ** 2
         if self.bmi < 18.5:
             self.bmi_message = "太輕"
-        if self.bmi < 24:
+        if 18.5<self.bmi < 24:
             self.bmi_message = "正常"
         if self.bmi < 27:
             self.bmi_message = "過重"
